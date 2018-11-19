@@ -209,7 +209,7 @@ def submitCondor(queue="espresso",name="job",dirname="dir"):
     jdl.write("output = $(filename).out\n")
     jdl.write("error = $(filename).err\n")
     jdl.write("executable = $(filename)\n")
-    jdl.write("+JobFlavor = \"%s\"\n"%queue)
+    jdl.write("+JobFlavour = \"%s\"\n"%queue)
     jdl.write("queue filename matching (%s/sub*sh)\n"%dirname)
     jdl.close()
     print "-> Submitting","%s/condor.jdl"%dirname
@@ -221,7 +221,7 @@ def resubmitCondor(list,queue="espresso",name="job",dirname="dir"):
     jdl.write("log = $(filename).log\n")
     jdl.write("output = $(filename).out\n")
     jdl.write("error = $(filename).err\n")
-    jdl.write("+JobFlavor = \"%s\"\n"%queue)
+    jdl.write("+JobFlavour = \"%s\"\n"%queue)
     for sh in list:
         jdl.write("executable = %s\n"%sh)
         jdl.write("queue\n")

@@ -231,6 +231,45 @@ elif options.what == 'vbf_hmm':
                     'processParameters')
                 )
             )
+elif options.what == 'minbias':
+    process.generator = cms.EDFilter("Pythia8GeneratorFilter",
+            PythiaParameters = cms.PSet(
+                parameterSets = cms.vstring(
+                    'pythia8CommonSettings', 
+                    'pythia8CUEP8M1Settings', 
+                    'processParameters'
+                    ),
+                processParameters = cms.vstring(
+                    'SoftQCD:nonDiffractive = on', 
+                    'SoftQCD:singleDiffractive = on', 
+                    'SoftQCD:doubleDiffractive = on'
+                    ),
+                pythia8CUEP8M1Settings = cms.vstring(
+                    'Tune:pp 14', 
+                    'Tune:ee 7', 
+                    'MultipartonInteractions:pT0Ref=2.4024', 
+                    'MultipartonInteractions:ecmPow=0.25208', 
+                    'MultipartonInteractions:expPow=1.6'
+                    ),
+                pythia8CommonSettings = cms.vstring(
+                    'Tune:preferLHAPDF = 2', 
+                    'Main:timesAllowErrors = 10000', 
+                    'Check:epTolErr = 0.01', 
+                    'Beams:setProductionScalesFromLHEF = off', 
+                    'SLHA:keepSM = on', 
+                    'SLHA:minMassSM = 1000.', 
+                    'ParticleDecays:limitTau0 = on', 
+                    'ParticleDecays:tau0Max = 10', 
+                    'ParticleDecays:allowPhotonRadiation = on'
+                    )
+                ),
+            comEnergy = cms.double(14000.0),
+            crossSection = cms.untracked.double(71390000000.0),
+            filterEfficiency = cms.untracked.double(1.0),
+            maxEventsToPrint = cms.untracked.int32(0),
+            pythiaHepMCVerbosity = cms.untracked.bool(False),
+            pythiaPylistVerbosity = cms.untracked.int32(1)
+            )
 else: raise ValueError("Options %s unimplemented"%options.what)
 
 
