@@ -138,7 +138,7 @@ elif options.what=='ggh_hmm':
                     'processParameters')
                 )
             )
-elif options.what == 'ggh_hbb':
+elif options.what == 'ggh_hbb' or options.what=='ggh_hbb_boost':
     process.generator = cms.EDFilter("Pythia8GeneratorFilter",
             comEnergy = cms.double(14000.0),
             crossSection = cms.untracked.double(1.0),
@@ -174,6 +174,13 @@ elif options.what == 'ggh_hbb':
             Status = cms.untracked.vint32(0, 0, 0, 0), # 0 = ignored
             MinPt = cms.untracked.vdouble(20.0, 20.0, 20.0, 20.0),
             ParticleID = cms.untracked.vint32(5, -5, 5, -5)
+            )
+    process.filter2 = cms.EDFilter("MCSingleParticleFilter",
+            MaxEta = cms.untracked.vdouble(3.0, 3.0,-1.5,-1.5),
+            MinEta = cms.untracked.vdouble(1.5, 1.5, -3.0, -3.0),
+            Status = cms.untracked.vint32(0, 0, 0, 0), # 0 = ignored
+            MinPt = cms.untracked.vdouble(options.pt, options.pt, options.pt, options.pt),
+            ParticleID = cms.untracked.vint32(25, -25, 25, -25)
             )
 elif options.what == 'ggh_hmm':
     process.generator = cms.EDFilter("Pythia8GeneratorFilter",
@@ -520,6 +527,8 @@ process.schedule = cms.Schedule(process.generation_step,process.genfiltersummary
 for path in process.paths:
     if options.what=='ggh_hbb':
         getattr(process,path)._seq = process.generator * process.filter1* getattr(process,path)._seq
+    elif options.what=='ggh_hbb_boost':
+        getattr(process,path)._seq = process.generator * process.filter1 * process.filter2* getattr(process,path)._seq
     else:
         getattr(process,path)._seq = process.generator * getattr(process,path)._seq
 
